@@ -1,2 +1,2 @@
-# AtividadeLinux
-PB DevSecOps Compass.uol - Atividade de Linux
+# PB DevSecOps Compass.uol - Atividade de Linux
+
