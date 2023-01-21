@@ -10,6 +10,7 @@
     + [Criando Gateway da Internet](#criando-gateway-da-internet)
     + [Associando gateway de Internet a uma VPC](#associando-gateway-de-internet-a-uma-vpc)
     + [Liberando tráfego de internet na Tabela de Roteamento](#liberando-tráfego-de-internet-na-tabela-de-roteamento)
+    + [Criando Grupo de Segurança](#criando-grupo-de-segurança)
 - [Referências](#referências)
 
 ## Integrante
@@ -182,5 +183,35 @@ preencha com `0.0.0.0/0`
 #### Alvo
 Selecione `Gateway da Internet` e em seguida selecione o gateway da internet nomeado de `gtw-antonio01`
 
-Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o quinto passo: Criação do Grupo de Segurança 
+Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o quinto passo: Criação do Grupo de Segurança
+
+### Criando Grupo de Segurança
+
+Inicie navegando até o console de gerenciamento de EC2 localizado no link : https://console.aws.amazon.com/ec2/
+
+Após isso, no painel inicial selecione a opção de `Grupos de Segurança`
+
+Acessando a página de grupos de segurança vamos iniciar clicando no botão `Criar grupo de segurança` no canto superior direito.
+
+Estando na página de Criação de Grupo de Segurança, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Nome do grupo de segurança
+preencha com `sg-antonio01`
+
+#### Descrição 
+preencha com `Grupo de segurança para atividade de linux`
+
+#### VPC
+selecione a que possui o nome `Antonio`
+
+#### Regras de Entradas
+
+Clique em adicionar nova regra quatro vezes.
+
+Após isso preencha da seguinte forma:
+
+![Regras de Entradas](regras-entradas.PNG)
+
 ## Referências
