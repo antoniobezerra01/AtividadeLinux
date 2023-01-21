@@ -11,6 +11,7 @@
     + [Associando gateway de Internet a uma VPC](#associando-gateway-de-internet-a-uma-vpc)
     + [Liberando tráfego de internet na Tabela de Roteamento](#liberando-tráfego-de-internet-na-tabela-de-roteamento)
     + [Criando Grupo de Segurança](#criando-grupo-de-segurança)
+    + [Criando Par de Chaves](#criando-par-de-chaves)
 - [Referências](#referências)
 
 ## Integrante
@@ -247,7 +248,7 @@ Então, preencha os campos com os seguintes valores:
 #### Nome
 Preencha com o nome `ChaveAntonio`
 
-### Formato de arquivo de chave privada
+#### Formato de arquivo de chave privada
 Selecione de acordo com a forma que irá acessar a instância EC2 remotamente, no meu caso selecionei `.ppk` para não ter que usar o puttygen e conseguir acessar diretamente pelo aplicativo [putty](https://www.putty.org).
 
 #### Tags
