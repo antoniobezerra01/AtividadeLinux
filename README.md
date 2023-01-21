@@ -198,10 +198,10 @@ Estando na página de Criação de Grupo de Segurança, vamos seguir preenchendo
 Então, preencha os campos com os seguintes valores:
 
 #### Nome do grupo de segurança
-preencha com `sg-antonio01`
+preencha com `AntonioSG`
 
 #### Descrição 
-preencha com `Grupo de segurança para atividade de linux`
+preencha com `Grupo de seguranca para atividade de linux`
 
 #### VPC
 selecione a que possui o nome `Antonio`
@@ -213,5 +213,22 @@ Clique em adicionar nova regra quatro vezes.
 Após isso preencha da seguinte forma:
 
 ![Regras de Entradas](regras-entradas.PNG)
+
+Entretanto, na primeira regra coloquei o meu IP público, logo será necessário ajustar de acordo com seu IP.
+
+Obs: Você pode obter seu ip acessando o site: https://meuip.com.br
+
+#### Tags
+Clique no botão `Adicionar nova tag`
+
+Insira `Project` no primeiro campo e no segundo preencha com `PB`
+
+Clique novamente em `Adicionar nova tag`
+
+Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+
+
+Com isso finalizamos a criação do grupo de segurança. Seguiremos vendo o sexto passo: Criação do par de chaves
+
 
 ## Referências
