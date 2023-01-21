@@ -182,5 +182,5 @@ preencha com `0.0.0.0/0`
 #### Alvo
 Selecione `Gateway da Internet` e em seguida selecione o gateway da internet nomeado de `gtw-antonio01`
 
-Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o quarto passo: Criação do Grupo de Segurança 
+Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o quinto passo: Criação do Grupo de Segurança 
 ## Referências
