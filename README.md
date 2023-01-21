@@ -71,6 +71,39 @@ Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
 
 Com isso finalizamos a criação da VPC. Seguiremos vendo o segundo passo: criação das sub-redes
 
+### Criando Sub-redes
 
+Inicie navegando até o console de gerenciamento de VPC localizado no link : https://console.aws.amazon.com/vpc/
+
+Após isso selecione a opção `Sub-redes` no canto esquerdo.
+
+Estando na página de gerenciamento de sub-redes, clique no botão  `Criar sub-rede` no canto superior direito da página.
+
+Agora vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### VPC
+Selecione a VPC nomeada de `Antonio` que foi criada anteriormente.
+
+#### Nome da sub-rede
+Preencha com `subnet-antonio01`
+
+#### Zona de disponibilizadade
+Selecione `us-east-1a`
+
+#### Bloco CIDR IPv4
+Preencha com `172.31.0.0/24`
+
+#### Tags
+Clique no botão `Adicionar nova tag`
+
+Insira `Project` no primeiro campo e no segundo preencha com `PB`
+
+Clique novamente em `Adicionar nova tag`
+
+Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+
+Com isso finalizamos a criação da sub-rede. Seguiremos vendo o terceiro passo: criação das sub-redes
 
 ## Referências
