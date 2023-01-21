@@ -7,6 +7,8 @@
     + [Requisito](#requisito)
     + [Criando a VPC](#criando-a-vpc)
     + [Criando Sub-redes](#criando-sub-redes)
+    + [Criando Gateway da Internet](#criando-gateway-da-internet)
+    + [Associando gateway de Internet a uma VPC](#associando-gateway-de-internet-a-uma-vpc)
 - [Referências](#referências)
 
 ## Integrante
@@ -104,6 +106,53 @@ Clique novamente em `Adicionar nova tag`
 
 Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
 
-Com isso finalizamos a criação da sub-rede. Seguiremos vendo o terceiro passo: criação das sub-redes
+Com isso finalizamos a criação da sub-rede. Seguiremos vendo o terceiro passo: criação do internet gateway
+
+### Criando Gateway da Internet
+
+Para a instância EC2 ter acesso a internet é necessário associar um gateway da internet a uma VPC.
+
+Inicie navegando até o console de gerenciamento de VPC localizado no link : https://console.aws.amazon.com/vpc/
+
+Após isso selecione a opção `Gateways da internet` no canto esquerdo.
+
+Estando na página de gerenciamento de sub-redes, clique no botão  `Criar gateway da Internet` no canto superior direito da página.
+
+Agora vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Tag de nome
+preencha com `gtw-antonio01`
+
+#### Tags
+Clique no botão `Adicionar nova tag`
+
+Insira `Project` no primeiro campo e no segundo preencha com `PB`
+
+Clique novamente em `Adicionar nova tag`
+
+Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+
+Com isso finalizamos a criação do gateway da Internet. Seguiremos vendo o terceiro passo: associar o internet gateway a uma VPC.
+
+### Associando gateway de Internet a uma VPC
+
+Após criar um gateway de internet devemos associa-la a uma vpc.
+
+Inicie navegando até a página de gerenciamento de Gateways da Internet.
+
+Clique com o botão direito do mouse sob o gateway de Internet nomeado de `gtw-antonio01`
+
+Agora selecione a opção `Associar à VPC`
+
+Estando na página de Associar gateway da Internet, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### VPCs disponíveis
+selecione a com nome `Antonio`
+
+Com isso finalizamos a associção do gateway da Internet. Seguiremos vendo o quarto passo: liberar o tráfego de internet na tabela de roteamento.
 
 ## Referências
