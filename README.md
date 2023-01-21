@@ -9,6 +9,7 @@
     + [Criando Sub-redes](#criando-sub-redes)
     + [Criando Gateway da Internet](#criando-gateway-da-internet)
     + [Associando gateway de Internet a uma VPC](#associando-gateway-de-internet-a-uma-vpc)
+    + [Liberando tráfego de internet na Tabela de Roteamento](#liberando-tráfego-de-internet-na-tabela-de-roteamento)
 - [Referências](#referências)
 
 ## Integrante
@@ -155,4 +156,31 @@ selecione a com nome `Antonio`
 
 Com isso finalizamos a associção do gateway da Internet. Seguiremos vendo o quarto passo: liberar o tráfego de internet na tabela de roteamento.
 
+### Liberando tráfego de internet na Tabela de Roteamento
+
+Para a instância EC2 ter acesso a internet é necessário liberar o tráfego de internet na tabela de roteamento.
+
+Inicie navegando até o console de gerenciamento de VPC localizado no link : https://console.aws.amazon.com/vpc/
+
+Após isso selecione a opção `Tabelas de rotas` no canto esquerdo.
+
+Estando na página da Tabelas de roteamento, selecione a tabela que está associada à VPC nomeada de `Antonio`.
+
+Após selecionar ela, estará visível no canto inferior o detalhamento referente a essa tabela.
+
+Nessa seção de detalhamento navegue até `rotas` e clique em `Editar rotas`
+
+Na página de editar rotas clique no botão `Adicionar rotas`
+
+Estando na página de Associar gateway da Internet, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Destino
+preencha com `0.0.0.0/0`
+
+#### Alvo
+Selecione `Gateway da Internet` e em seguida selecione o gateway da internet nomeado de `gtw-antonio01`
+
+Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o quarto passo: Criação do Grupo de Segurança 
 ## Referências
