@@ -12,6 +12,7 @@
     + [Liberando tráfego de internet na Tabela de Roteamento](#liberando-tráfego-de-internet-na-tabela-de-roteamento)
     + [Criando Grupo de Segurança](#criando-grupo-de-segurança)
     + [Criando Par de Chaves](#criando-par-de-chaves)
+    + [Executando instâncias](#executando-instâncias)
 - [Referências](#referências)
 
 ## Integrante
@@ -264,6 +265,56 @@ Após clicar no botão `Criar par de chaves`, irá ocorrer o download do arquivo
 
 Com isso finalizamos a criação do par de chaves. Seguiremos vendo o sétimo passo: Executar instância EC2
 
+### Executando instâncias
 
+Agora que já possuimos o necessário para de fato subir uma instância EC2 na AWS, vamos seguir com a sua criação.
+
+Desse modo, inicie navegando até o console de gerenciamento de EC2 localizado no link : https://console.aws.amazon.com/ec2/
+
+Após isso, no painel inicial selecione a opção de `Instâncias`
+
+Acessando a página de grupos de segurança vamos iniciar clicando no botão `Executar Instâncias` no canto superior direito.
+
+Estando na página de Criação de instâncias, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Nome e tags
+
+Preencha o nome com `Antonio`
+
+Clique no botão `Adicionar nova tag`
+
+Insira `Project` no primeiro campo e no segundo preencha com `PB`
+
+Clique novamente em `Adicionar nova tag`
+
+Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+
+#### Imagens de aplicação e sistema operacional
+
+Você pode mudar de acordo com sua necessidade mas no meu caso irei utilizar a AMI padrão: `Linux 2`
+
+#### Tipo de instância
+
+Selecione `t3.small`
+
+#### key pair (login)
+
+Selecione a opção que possui o nome `ChaveAntonio`
+
+#### Configurações de redes
+Clique no botão `Editar`
+
+Habilite a opção `Atribuir IP público automaticamente`
+
+logo abaixo em `Firewall` selecione um grupo de segurança existente e selecione o grupo de segurança criado previamente, com o nome de `AntonioSG`
+
+#### Configurar Armazenamento
+Aumente a capacidade do SSD para `16 Gib`
+
+Por fim, selecione o botão `Executar Instância` no canto direito.
+
+Com isso finalizamos as configurações inicias para a inicialização de uma instância EC2 na AWS.
 
 ## Referências
