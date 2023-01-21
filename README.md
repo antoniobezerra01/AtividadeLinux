@@ -230,5 +230,39 @@ Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
 
 Com isso finalizamos a criação do grupo de segurança. Seguiremos vendo o sexto passo: Criação do par de chaves
 
+### Criando par de chaves
+
+O par de chaves é necessário para ser possível o acesso remoto a sua instância no EC2.
+
+Dito isso, inicie navegando até o console de gerenciamento de EC2 localizado no link : https://console.aws.amazon.com/ec2/
+
+Após isso, no painel inicial selecione a opção de `Pares de chaves`
+
+Acessando a página de grupos de segurança vamos iniciar clicando no botão `Criar par de chaves` no canto superior direito.
+
+Estando na página de Criação de par de chaves, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Nome
+Preencha com o nome `ChaveAntonio`
+
+### Formato de arquivo de chave privada
+Selecione de acordo com a forma que irá acessar a instância EC2 remotamente, no meu caso selecionei `.ppk` para não ter que usar o puttygen e conseguir acessar diretamente pelo aplicativo [putty](https://www.putty.org).
+
+#### Tags
+Clique no botão `Adicionar nova tag`
+
+Insira `Project` no primeiro campo e no segundo preencha com `PB`
+
+Clique novamente em `Adicionar nova tag`
+
+Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+
+Após clicar no botão `Criar par de chaves`, irá ocorrer o download do arquivo responsável pela liberação do acesso remoto.
+
+Com isso finalizamos a criação do par de chaves. Seguiremos vendo o sétimo passo: Executar instância EC2
+
+
 
 ## Referências
