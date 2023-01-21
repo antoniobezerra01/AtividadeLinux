@@ -13,6 +13,7 @@
     + [Criando Grupo de Segurança](#criando-grupo-de-segurança)
     + [Criando Par de Chaves](#criando-par-de-chaves)
     + [Executando instâncias](#executando-instâncias)
+- [Associando IP elástico a uma Instância](#associando-ip-elástico-a-uma-instância)
 - [Referências](#referências)
 
 ## Integrante
@@ -316,5 +317,54 @@ Aumente a capacidade do SSD para `16 Gib`
 Por fim, selecione o botão `Executar Instância` no canto direito.
 
 Com isso finalizamos as configurações inicias para a inicialização de uma instância EC2 na AWS.
+
+## Associando IP elástico a uma Instância
+
+É necessário associar um IP elástico a uma instância para que seu endereço IPv4 público torne-se estático.
+
+inicie navegando até o console de gerenciamento de EC2 localizado no link : https://console.aws.amazon.com/ec2/
+
+Após isso, no painel inicial selecione a opção de `Ips elásticos`
+
+Acessando a página de Ips elásticos vamos iniciar clicando no botão `Alocar endereço IP elástico` no canto superior direito.
+
+Estando na página de Alocação de endereços Ips, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Grupo de Borda de Rede
+Preencha de acordo com a região da sua VPC, no meu caso eu preenchi com `us-east-1`
+
+#### Tags
+Insira `Name` no primeiro campo e no segundo preencha com `Antonio`
+
+Clique no botão `Adicionar nova tag`
+
+Insira `Project` no primeiro campo e no segundo preencha com `PB`
+
+Clique novamente em `Adicionar nova tag`
+
+Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+
+Após isso clique no botão `Alocar` no canto inferior direito.
+
+Seguindo na página de gerenciamento de Ips elásticos, vamos selecionar o que está nomeado com `Antonio` e clicar no botão `Ações`. Após isso, selecione a opção `Associar Endereço Ip elástico`
+
+Seguindo esse passos estaremos na página de associar endereço IP estático.
+
+Estando na nessa página, vamos seguir preenchendo alguns campos com suas devidas informações.
+
+Então, preencha os campos com os seguintes valores:
+
+#### Tipo de recurso
+Selecione `Instância`
+
+#### Instância
+Selecione a instância previamente criada, no caso a que possui o nome `Antonio`
+
+#### Endereço IP privado
+Selecione a opção disponível, no meu caso `172.31.0.123`
+
+Por fim, clique no botão `Associar` e agora temos um endereço elástico IP associado a instância criada previamente.
 
 ## Referências
