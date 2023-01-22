@@ -15,6 +15,8 @@
     + [Executando instâncias](#executando-instâncias)
 - [Associando IP elástico a uma Instância](#associando-ip-elástico-a-uma-instância)
 - [Subindo Apache na instância EC2](#subindo-apache-na-instância-ec2)
+- [Implementando Script para validar status do Apache](#implementando-script-para-validar-status-do-apache)
+    + [Fazendo o script executar a cada 5 minutos](#fazendo-o-script-executar-a-cada-5-minutos)
 - [Referências](#referências)
 
 ## Integrante
@@ -368,7 +370,7 @@ Selecione a opção disponível, no meu caso `172.31.0.123`
 
 Por fim, clique no botão `Associar` e agora temos um endereço elástico IP associado a instância criada previamente.
 
-### Subindo Apache na instância EC2
+## Subindo Apache na instância EC2
 
 Para subir o serviço do Apache utilizaremos um script. Esse script será aplicado no campo `user-data` durante a criação de uma instância para que ele seja executado durante a inicialização da instância.
 
@@ -383,5 +385,50 @@ systemctl start httpd.service
 systemctl enable httpd.service
 ```
 Com isso já estamos com um servidor Apache rodando na instância EC2.
+
+## Implementando Script para validar status do Apache
+
+Irei utilizar Shell Script para implementar o script de validação do serviço do Apache.
+
+Então, vamos considerar o seguinte script:
+
+```bash
+#!/bin/bash
+
+# Obtendo o status do serviço do Apache
+SERVICO=httpd
+STATUS="$(systemctl is-active ${SERVICO})"
+
+# Diretorio o qual será usado para log
+# ! -> Operador de negação
+# -d diretorio -> opção do comando test para verficar se diretório existe
+# Verificando se o diretório /antonio-carlos existe
+if [ ! -d /antonio-carlos ]; then
+	mkdir /antonio-carlos/
+fi
+
+# Verificando se o serviço do Apache está ativo ou inativo
+# Gerando log sobre o status do httpd
+if [ "${STATUS}" = "active" ]; then
+	date >> /antonio-carlos/ativo.txt
+	echo "status=ativo" >> /antonio-carlos/ativo.txt
+	echo -e "O serviço ${SERVICO} está online\n" >> /antonio-carlos/ativo.txt 
+elif [ "${STATUS}" = "inactive" ]; then
+	date >> /antonio-carlos/inativo.txt
+	echo "status=inativo" >> /antonio-carlos/inativo.txt
+	echo -e  "O serviço ${SERVICO} está inativo\n" >> /antonio-carlos/inativo.txt
+fi  
+```
+Esse script cria o diretório `/antonio-carlos` que será o nosso diretório de logs caso não exista. Além disso, ele verifica o status do serviço httpd e gera dois arquivos para logs.
+
+### Fazendo o script executar a cada 5 minutos 
+
+Para fazer esse script executar a cada 5 minutos iremos utilizar o serviço do cron. Então, basta adicionar as seguintes linhas abaixo no arquivo localizado em `/etc/crontab`
+
+```bash
+# / -> cria intervalos de tempos
+# Linha abaixo executa script a cada 5 minutos
+*/5 * * * * root bash /AtividadeLinux/shell-scripts/valida-status-httpd.sh
+```
 
 ## Referências
