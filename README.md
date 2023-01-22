@@ -14,6 +14,7 @@
     + [Criando Par de Chaves](#criando-par-de-chaves)
     + [Executando instâncias](#executando-instâncias)
 - [Associando IP elástico a uma Instância](#associando-ip-elástico-a-uma-instância)
+- [Subindo Apache na instância EC2](#subindo-apache-na-instância-ec2)
 - [Referências](#referências)
 
 ## Integrante
@@ -366,5 +367,21 @@ Selecione a instância previamente criada, no caso a que possui o nome `Antonio`
 Selecione a opção disponível, no meu caso `172.31.0.123`
 
 Por fim, clique no botão `Associar` e agora temos um endereço elástico IP associado a instância criada previamente.
+
+### Subindo Apache na instância EC2
+
+Para subir o serviço do Apache utilizaremos um script. Esse script será aplicado no campo `user-data` durante a criação de uma instância para que ele seja executado durante a inicialização da instância.
+
+Para iniciarmos com a criação do servidor apache devemos incialmente instalá-lo na instância através do seguinte:
+```bash
+ yum install -y httpd
+```
+Logo após isso devemos iniciar e habilitar o serviço do Apache por meio dos seguintes comandos:
+
+```bash 
+systemctl start httpd.service
+systemctl enable httpd.service
+```
+Com isso já estamos com um servidor Apache rodando na instância EC2.
 
 ## Referências
