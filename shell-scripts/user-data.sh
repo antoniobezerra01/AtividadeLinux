@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Boa prática antes de instalar pacotes
-sudo yum update -y
+yum update -y
 
 # Baixando e configurando git para versionamento
 yum install -y git
@@ -14,4 +14,5 @@ systemctl start httpd
 systemctl enable httpd
 
 # Configurando script valida-status-httpd
+timedatectl set-timezone America/Sao_Paulo
 /bin/cp -f /AtividadeLinux/etc/crontab /etc/crontab
