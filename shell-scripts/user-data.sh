@@ -16,3 +16,8 @@ systemctl enable httpd
 # Configurando script valida-status-httpd
 timedatectl set-timezone America/Sao_Paulo
 /bin/cp -f /AtividadeLinux/etc/crontab /etc/crontab
+
+# Configurando montagem do NFS
+mkdir -p /mnt/nfs
+/bin/cp -f /AtividadeLinux/etc/fstab /etc/fstab
+mount -a
