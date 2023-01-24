@@ -7,9 +7,9 @@ STATUS="$(systemctl is-active ${SERVICO})"
 # Diretorio o qual será usado para log
 # ! -> Operador de negação
 # -d diretorio -> opção do comando test para verficar se diretório existe
-# Verificando se o diretório /nfs existe
-if [ ! -d /mnt/nfs ]; then
-	mkdir /mnt/nfs/
+# Verificando se o diretório antonio-carlos existe
+if [ ! -d /mnt/nfs/antonio-carlos ]; then
+	mkdir /mnt/nfs/antonio-carlos
 fi
 
 # Verificando se o serviço do Apache está ativo ou inativo
