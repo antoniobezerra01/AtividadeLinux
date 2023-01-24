@@ -1,6 +1,3 @@
-#
-UUID=47834bf7-764e-42f9-9507-11a3e70b99de     /           xfs    defaults,noatime  1   1
 
 # Montagem do NFS ao iniciar a instância EC2
 172.31.71.111:/ /mnt/nfs  nfs      defaults    0       
-
