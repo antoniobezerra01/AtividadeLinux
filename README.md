@@ -4,25 +4,24 @@
 - [Integrante](#integrante)
 - [Sobre a Atividade](#sobre-a-atividade)
 - [Iniciando a criação de uma instância no AWS EC2](#iniciando-a-criação-de-uma-instância-no-aws-ec2)
-    + [Requisito](#requisito)
-    + [Criando a VPC](#criando-a-vpc)
-    + [Criando Sub-redes](#criando-sub-redes)
+    + [Pré-requisitos](#pré-requisitos)
+    + [Criando Par de Chaves](#criando-par-de-chaves)
     + [Criando Gateway da Internet](#criando-gateway-da-internet)
     + [Associando gateway de Internet a uma VPC](#associando-gateway-de-internet-a-uma-vpc)
     + [Liberando tráfego de internet na Tabela de Roteamento](#liberando-tráfego-de-internet-na-tabela-de-roteamento)
-    + [Criando Grupo de Segurança](#criando-grupo-de-segurança)
-    + [Criando Par de Chaves](#criando-par-de-chaves)
+    + [Editando Grupo de Segurança](#editando-grupo-de-segurança)
     + [Executando instâncias](#executando-instâncias)
 - [Associando IP elástico a uma Instância](#associando-ip-elástico-a-uma-instância)
+- [Configurando acesso ao NFS](#configurando-acesso-ao-nfs)
 - [Subindo Apache na instância EC2](#subindo-apache-na-instância-ec2)
 - [Implementando Script para validar status do Apache](#implementando-script-para-validar-status-do-apache)
     + [Fazendo o script executar a cada 5 minutos](#fazendo-o-script-executar-a-cada-5-minutos)
 - [Referências](#referências)
 
-## Integrante
+# Integrante
 [Antonio Bezerra](https://github.com/antoniobezerra01)
 
-## Sobre a Atividade
+# Sobre a Atividade
 
 Atividade individual para implementação de requisitos sobre Linux e AWS a serem atendidos, tais como:
 
@@ -43,84 +42,50 @@ Atividade individual para implementação de requisitos sobre Linux e AWS a sere
   8. Fazer o versionamento da atividade;
   9. Fazer a documentação explicando o processo de instalação do Linux.
 
-## Iniciando a criação de uma instância no AWS EC2
+# Iniciando a criação de uma instância no AWS EC2
 
-### Requisito
+## Pré-requisitos
 
-Para iniciar uma instância no AWS EC2 é imprescindível a utilização de uma conta na AWS.
+- Para iniciar uma instância no [AWS EC2](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/concepts.html) é imprescindível a utilização de uma conta na AWS.
+- Será utilizado [VPC](https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/what-is-amazon-vpc.html) padrão.
+- Será utilizado [Grupo de Segurança](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/ec2-security-groups.html) padrão.
+- Será utilizado [Sub-redes](https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/how-it-works.html) padrão.
+- Considerarei utilizar três [Tags](https://docs.aws.amazon.com/pt_br/general/latest/gr/aws_tagging.html) padrões ao utilizar qualquer recurso citado na AWS, são elas:
+    + Name : Antonio
+    + Project : PB
+    + CostCenter : PBCompass
 
-### Criando a VPC
+Ambos conceitos podem ser melhormente visualizados perante documentação da AWS, para isso disponibilizei links para documentação sobre tais assuntos.
 
-Inicie navegando até o console de gerenciamento de VPC localizado no link : https://console.aws.amazon.com/vpc/
+## Criando par de chaves
 
-Após isso selecione a opção de `Criar VPC` localizada no canto superior da página.
+O par de chaves é necessário para ser possível o acesso remoto a sua instância no EC2. Saiba mais sobre par de chaves [aqui](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 
-Agora vamos seguir preenchendo alguns campos com suas devidas informações.
-Iremos preencher apenas os campos que necessitam de modificação.
+Dito isso, inicie navegando até o console de gerenciamento de EC2 localizado no link: https://console.aws.amazon.com/ec2/
 
-Caso ocorra de houver campos não citados, podem deixar com o valor padrão já alocado.
-Então, preencha os campos com os seguintes valores:
+Após isso, no painel inicial selecione a opção de `Pares de chaves`
 
-#### Recursos a serem criados
-Selecione a opção `Somente VPC`
+Acessando a página de grupos de segurança vamos iniciar clicando no botão `Criar par de chaves` no canto superior direito.
 
-#### Tag de nome
-Preencha com `Antonio`
-
-#### CIDR IPv4
-Preencha com `172.31.0.0/16`
-
-#### Tags
-Clique no botão `Adicionar nova tag`
-
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
-
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
-
-Com isso finalizamos a criação da VPC. Seguiremos vendo o segundo passo: criação das sub-redes
-
-### Criando Sub-redes
-
-Inicie navegando até o console de gerenciamento de VPC localizado no link : https://console.aws.amazon.com/vpc/
-
-Após isso selecione a opção `Sub-redes` no canto esquerdo.
-
-Estando na página de gerenciamento de sub-redes, clique no botão  `Criar sub-rede` no canto superior direito da página.
-
-Agora vamos seguir preenchendo alguns campos com suas devidas informações.
+Estando na página de Criação de par de chaves, vamos seguir preenchendo alguns campos com suas devidas informações.
 
 Então, preencha os campos com os seguintes valores:
 
-#### VPC
-Selecione a VPC nomeada de `Antonio` que foi criada anteriormente.
+#### Nome
+Preencha com um nome de sua preferência, colocarei `keySSHAntonio`
 
-#### Nome da sub-rede
-Preencha com `subnet-antonio01`
+#### Formato de arquivo de chave privada
+Selecione de acordo com a forma que irá acessar a instância EC2 remotamente, no meu caso selecionei `.pem` para acessar via CMD a instância.
 
-#### Zona de disponibilizadade
-Selecione `us-east-1a`
+Após clicar no botão `Criar par de chaves`, irá ocorrer o download do arquivo responsável pela liberação do acesso remoto.
 
-#### Bloco CIDR IPv4
-Preencha com `172.31.0.0/24`
+Com isso finalizamos a criação do par de chaves. Seguiremos vendo o próximo passo: Criação do Gateway de Internet.
 
-#### Tags
-Clique no botão `Adicionar nova tag`
+## Criando Gateway da Internet
 
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
+Para a instância EC2 ter acesso à internet é necessário associar um gateway da internet a uma VPC. Saiba mais sobre Gateway de Internet clicando [aqui](https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/VPC_Internet_Gateway.html).
 
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
-
-Com isso finalizamos a criação da sub-rede. Seguiremos vendo o terceiro passo: criação do internet gateway
-
-### Criando Gateway da Internet
-
-Para a instância EC2 ter acesso a internet é necessário associar um gateway da internet a uma VPC.
-
-Inicie navegando até o console de gerenciamento de VPC localizado no link : https://console.aws.amazon.com/vpc/
+Inicie navegando até o console de gerenciamento de VPC localizado no link: https://console.aws.amazon.com/vpc/
 
 Após isso selecione a opção `Gateways da internet` no canto esquerdo.
 
@@ -131,26 +96,19 @@ Agora vamos seguir preenchendo alguns campos com suas devidas informações.
 Então, preencha os campos com os seguintes valores:
 
 #### Tag de nome
-preencha com `gtw-antonio01`
+Preencha com um nome de sua preferência, colocarei `Antonio`
 
-#### Tags
-Clique no botão `Adicionar nova tag`
+Agora, clique em `Criar Gateway da Internet`
 
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
+Com isso finalizamos a criação do gateway da Internet. Seguiremos vendo o próximo passo: associar a internet gateway a uma VPC.
 
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
-
-Com isso finalizamos a criação do gateway da Internet. Seguiremos vendo o terceiro passo: associar a internet gateway a uma VPC.
-
-### Associando gateway de Internet a uma VPC
+## Associando Gateway de Internet a uma VPC
 
 Após criar um gateway de internet devemos associa-lo a uma vpc.
 
 Inicie navegando até a página de gerenciamento de Gateways da Internet.
 
-Clique com o botão direito do mouse sob o gateway de Internet nomeado de `gtw-antonio01`
+Clique com o botão direito do mouse sob o gateway de Internet nomeado de `Antonio`
 
 Agora selecione a opção `Associar à VPC`
 
@@ -159,11 +117,11 @@ Estando na página de Associar gateway da Internet, vamos seguir preenchendo alg
 Então, preencha os campos com os seguintes valores:
 
 #### VPCs disponíveis
-selecione a com nome `Antonio`
+Selecione com nome `Default`
 
-Com isso finalizamos a associação do gateway da Internet. Seguiremos vendo o quarto passo: liberar o tráfego de internet na tabela de roteamento.
+Com isso finalizamos a associação do gateway da Internet. Seguiremos vendo o próximo passo: liberar o tráfego de internet na tabela de roteamento.
 
-### Liberando tráfego de internet na Tabela de Roteamento
+## Liberando tráfego de internet na Tabela de Roteamento
 
 Para a instância EC2 ter acesso à internet é necessário liberar o tráfego de internet na tabela de roteamento.
 
@@ -171,7 +129,7 @@ Inicie navegando até o console de gerenciamento de VPC localizado no link: http
 
 Após isso selecione a opção `Tabelas de rotas` no canto esquerdo.
 
-Estando na página da tabela de roteamento, selecione a tabela que está associada à VPC nomeada de `Antonio`.
+Estando na página da tabela de roteamento, selecione a tabela que está associada à VPC nomeada de `Default`.
 
 Após selecionar ela, estará visível no canto inferior o detalhamento referente a essa tabela.
 
@@ -187,30 +145,21 @@ Então, preencha os campos com os seguintes valores:
 preencha com `0.0.0.0/0`
 
 #### Alvo
-Selecione `Gateway da Internet` e em seguida selecione o gateway da internet nomeado de `gtw-antonio01`
+Selecione `Gateway da Internet` e em seguida selecione o gateway da internet nomeado de `Antonio`
 
-Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o quinto passo: Criação do Grupo de Segurança
+Com isso finalizamos a liberação do tráfego de internet na tabela de roteamento. Seguiremos vendo o próximo passo: Editar o Grupo de Segurança.
 
-### Criando Grupo de Segurança
+## Editando Grupo de Segurança
 
 Inicie navegando até o console de gerenciamento de EC2 localizado no link: https://console.aws.amazon.com/ec2/
 
 Após isso, no painel inicial selecione a opção de `Grupos de Segurança`
 
-Acessando a página de grupos de segurança vamos iniciar clicando no botão `Criar grupo de segurança` no canto superior direito.
+Acessando a página de grupos de segurança vamos iniciar selecionando o grupo de segurança padrão com o nome de `default`. Com ele selecionado, acesse o botão `Ações` e selecione a opção `Editar regras de entradas`
 
-Estando na página de Criação de Grupo de Segurança, vamos seguir preenchendo alguns campos com suas devidas informações.
+Estando na página de edição das regras de entrada do Grupo de Segurança, vamos seguir preenchendo alguns campos com suas devidas informações.
 
 Então, preencha os campos com os seguintes valores:
-
-#### Nome do grupo de segurança
-preencha com `AntonioSG`
-
-#### Descrição
-preencha com `Grupo de seguranca para atividade de Linux`
-
-#### VPC
-selecione a que possui o nome `Antonio`
 
 #### Regras de Entradas
 
@@ -222,58 +171,18 @@ Após isso preencha da seguinte forma:
 
 Entretanto, na primeira regra coloquei o meu IP público, logo será necessário ajustar de acordo com seu IP.
 
-Obs.: Você pode obter seu ip acessando o site: https://meuip.com.br
+Obs.: Você pode obter seu IP acessando o site: https://meuip.com.br
 
-#### Tags
-Clique no botão `Adicionar nova tag`
-
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
-
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
+Por fim, clique em `salvar regras` no canto inferior direito da página.
+Com isso finalizamos a edição do grupo de segurança.
 
 
-Com isso finalizamos a criação do grupo de segurança. Seguiremos vendo o sexto passo: Criação do par de chaves.
 
-### Criando par de chaves
-
-O par de chaves é necessário para ser possível o acesso remoto a sua instância no EC2.
-
-Dito isso, inicie navegando até o console de gerenciamento de EC2 localizado no link: https://console.aws.amazon.com/ec2/
-
-Após isso, no painel inicial selecione a opção de `Pares de chaves`
-
-Acessando a página de grupos de segurança vamos iniciar clicando no botão `Criar par de chaves` no canto superior direito.
-
-Estando na página de Criação de par de chaves, vamos seguir preenchendo alguns campos com suas devidas informações.
-
-Então, preencha os campos com os seguintes valores:
-
-#### Nome
-Preencha com o nome `ChaveAntonio`
-
-#### Formato de arquivo de chave privada
-Selecione de acordo com a forma que irá acessar a instância EC2 remotamente, no meu caso selecionei `.ppk` para não ter que usar o puttygen e conseguir acessar diretamente pelo aplicativo [putty](https://www.putty.org).
-
-#### Tags
-Clique no botão `Adicionar nova tag`
-
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
-
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
-
-Após clicar no botão `Criar par de chaves`, irá ocorrer o download do arquivo responsável pela liberação do acesso remoto.
-
-Com isso finalizamos a criação do par de chaves. Seguiremos vendo o sétimo passo: Executar instância EC2
-
-### Executando instâncias
+## Executando instâncias
 
 Agora que já possuímos o necessário para de fato subir uma instância EC2 na AWS, vamos seguir com a sua criação.
 
-Desse modo, inicie navegando até o console de gerenciamento de EC2 localizado no link : https://console.aws.amazon.com/ec2/
+Desse modo, inicie navegando até o console de gerenciamento de EC2 localizado no link: https://console.aws.amazon.com/ec2/
 
 Após isso, no painel inicial selecione a opção de `Instâncias`
 
@@ -283,47 +192,33 @@ Estando na página de Criação de instâncias, vamos seguir preenchendo alguns 
 
 Então, preencha os campos com os seguintes valores:
 
-#### Nome e tags
-
-Preencha o nome com `Antonio`
-
-Clique no botão `Adicionar nova tag`
-
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
-
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
-
 #### Imagens de aplicação e sistema operacional
 
 Você pode mudar de acordo com sua necessidade, mas no meu caso irei utilizar a AMI padrão: `Linux 2`
 
 #### Tipo de instância
 
-Selecione `t3.small`
+Assim como na AMI, você pode mudar, no entanto, selecionei `t3.small`
 
 #### key pair (login)
 
-Selecione a opção que possui o nome `ChaveAntonio`
+Selecione a opção que foi criada anteriormente, então selecionarei a que possui o nome `keySSHAntonio`
 
 #### Configurações de redes
 Clique no botão `Editar`
 
-Habilite a opção `Atribuir IP público automaticamente`
-
-logo abaixo em `Firewall` selecione um grupo de segurança existente e selecione o grupo de segurança criado previamente, com o nome de `AntonioSG`
+após clicar, logo abaixo no campo `Firewall` selecione um grupo de segurança existente, no caso o padrão com nome de `default`
 
 #### Configurar Armazenamento
-Aumente a capacidade do SSD para `16 Gib`
+Aumentarei a capacidade do SSD para `16 Gib`, porém para essa prática pode ser utilizado a capacidade padrão do EBS.
 
 Por fim, selecione o botão `Executar Instância` no canto direito.
 
 Com isso finalizamos as configurações iniciais para a inicialização de uma instância EC2 na AWS.
 
-## Associando IP elástico a uma Instância
+# Associando IP elástico a uma Instância
 
-É necessário associar um IP elástico a uma instância para que seu endereço IPv4 público torne-se estático.
+É necessário associar um IP elástico a uma instância para que ela adquira um IPv4 público e seu endereço IPv4 público torne-se estático.
 
 Inicie navegando até o console de gerenciamento de EC2 localizado no link: https://console.aws.amazon.com/ec2/
 
@@ -337,17 +232,6 @@ Então, preencha os campos com os seguintes valores:
 
 #### Grupo de Borda de Rede
 Preencha de acordo com a região da sua VPC, no meu caso eu preenchi com `us-east-1`
-
-#### Tags
-Insira `Name` no primeiro campo e no segundo preencha com `Antonio`
-
-Clique no botão `Adicionar nova tag`
-
-Insira `Project` no primeiro campo e no segundo preencha com `PB`
-
-Clique novamente em `Adicionar nova tag`
-
-Insira `CostCenter`  no primeiro campo e no segundo preencha com `PBCompass`
 
 Após isso clique no botão `Alocar` no canto inferior direito.
 
@@ -370,9 +254,31 @@ Selecione a opção disponível, no meu caso `172.31.0.123`
 
 Por fim, clique no botão `Associar` e agora temos um endereço elástico IP associado a instância criada previamente.
 
-## Subindo Apache na instância EC2
+# Configurando acesso ao NFS
+O NFS é um sistema de arquivo virtual bastante utilizado para compartilhar dados na rede. Na AWS, esse serviço pode ser fornecido pelo EFS. Para saber mais sobre o EFS clique [aqui](https://docs.aws.amazon.com/pt_br/efs/latest/ug/whatisefs.html).
 
-Para subir o serviço do Apache utilizaremos um script. Esse script será aplicado no campo `user-data` durante a criação de uma instância para que ele seja executado durante a inicialização da instância.
+Inicialmente, devemos criar o diretório o qual irá ser montado esse sistema de arquivos. No meu caso, irei seguir com o seguinte comando:
+```bash
+mkdir -p /mnt/nfs/
+```
+
+Então o diretório `nfs` será o diretório de montagem, após isso devemo realizar a montagem de acordo com o IP ou DNS que foi fornecido para acessar tal sistema de arquivo. Para montar podemos realizar seguinte comando:
+
+```bash
+mount -t nfs IP-DNS-FORNECIDO:/ /SEU-DIRETORIO-DE-MONTAGEM
+```
+Com isso, está configurado e funcionando normalmente o seu NFS. Entretanto, para não ficar realizando o comando de montagem manual toda vez ao reiniciar o computador, recomendo que realize a seguinte configuração:
+
+Edite o arquivo de configurações de montagem, localizado em `/etc/fstab` e adicione a seguinte linha no fim do arquivo:
+```
+IP-DNS-FORNECIDO:/ /SEU-DIRETORIO-DE-MONTAGEM nfs      defaults    0      
+ ```
+
+ Após essa modificação, o NFS está configurado e executando normalmente, mesmo após reiniciar a instância.
+ 
+# Subindo Apache na instância EC2
+
+Para subir o serviço do Apache utilizaremos um script. Esse script será aplicado no campo [user-data](/shell-scripts/user-data.sh) durante a criação de uma instância para que ele seja executado durante a inicialização da instância.
 
 Para iniciarmos com a criação do servidor apache devemos inicialmente instalá-lo na instância através do seguinte:
 ```bash
@@ -386,9 +292,9 @@ systemctl enable httpd.service
 ```
 Com isso já estamos com um servidor Apache rodando na instância EC2.
 
-## Implementando Script para validar status do Apache
+# Implementando Script para validar status do Apache
 
-Irei utilizar Shell Script para implementar o script de validação do serviço do Apache.
+Irei utilizar Shell Script, que é muito útil no processo de automatização de tarefas, para implementar o script de validação do serviço do Apache.
 
 Então, vamos considerar o seguinte script:
 
@@ -402,28 +308,29 @@ STATUS="$(systemctl is-active ${SERVICO})"
 # Diretorio o qual será usado para log
 # ! -> Operador de negação
 # -d diretorio -> opção do comando test para verficar se diretório existe
-# Verificando se o diretório /antonio-carlos existe
-if [ ! -d /antonio-carlos ]; then
-mkdir /antonio-carlos/
+# Verificando se o diretório antonio-carlos existe
+if [ ! -d /mnt/nfs/antonio-carlos ]; then
+mkdir /mnt/nfs/antonio-carlos
 fi
 
 # Verificando se o serviço do Apache está ativo ou inativo
 # Gerando log sobre o status do httpd
 if [ "${STATUS}" = "active" ]; then
-date >> /antonio-carlos/ativo.txt
-echo "status=ativo" >> /antonio-carlos/ativo.txt
-echo -e "O serviço ${SERVICO} está online\n" >> /antonio-carlos/ativo.txt
+date >> /mnt/nfs/antonio-carlos/ativo.txt
+echo "status=ativo" >> /mnt/nfs/antonio-carlos/ativo.txt
+echo -e "O serviço ${SERVICO} está online\n" >>/mnt/nfs/antonio-carlos/ativo.txt
 elif [ "${STATUS}" = "inactive" ]; then
-date >> /antonio-carlos/inativo.txt
-echo "status=inativo" >> /antonio-carlos/inativo.txt
-echo -e  "O serviço ${SERVICO} está inativo\n" >> /antonio-carlos/inativo.txt
-fi  
+date >> /mnt/nfs/antonio-carlos/inativo.txt
+echo "status=inativo" >> /mnt/nfs/antonio-carlos/inativo.txt
+echo -e  "O serviço ${SERVICO} está inativo\n" >> /mnt/nfs/antonio-carlos/inativo.txt
+fi
 ```
-Esse script cria o diretório `/antonio-carlos` que será o nosso diretório de logs caso não exista. Além disso, ele verifica o status do serviço httpd e gera dois arquivos para logs.
+Esse script cria o diretório `antonio-carlos`, que será o nosso diretório de logs, caso não exista. Além disso, ele verifica o status do serviço httpd e gera dois arquivos para logs.
 
-### Fazendo o script executar a cada 5 minutos
+## Fazendo o script executar a cada 5 minutos
+Utilizaremos o cron que é um serviço do Linux que permite agendar a execução de comandos e processos.
 
-Para fazer esse script executar a cada 5 minutos iremos utilizar o serviço do cron. Então, basta adicionar as seguintes linhas abaixo no arquivo localizado em `/etc/crontab`
+Logo, iremos fazer esse script executar a cada 5 minuto. Então, basta adicionar as seguintes linhas abaixo no arquivo localizado em `/etc/crontab`
 
 ```bash
 # / -> cria intervalos de tempos
@@ -431,4 +338,9 @@ Para fazer esse script executar a cada 5 minutos iremos utilizar o serviço do c
 */5 * * * * root bash /AtividadeLinux/shell-scripts/valida-status-httpd.sh
 ```
 
-## Referências
+# Referências
+- [Guia do usuário no EC2 para instâncias do Linux](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/concepts.html)
+
+- [Guia do usuário para Amazon EFS](https://docs.aws.amazon.com/pt_br/efs/latest/ug/whatisefs.html)
+
+- [Guia para Shell Script](https://www.shellscript.sh/index.html)
